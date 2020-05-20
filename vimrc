@@ -13,14 +13,17 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'valloric/youcompleteme'
   Plug 'morhetz/gruvbox'
   Plug 'scrooloose/nerdcommenter'
+  Plug 'burntsushi/ripgrep'
 call plug#end()
 
 " gruvbox
 let g:gruvbox_contrast_dark='soft'
 colorscheme gruvbox
 
-
-
+if executable('rg')
+    let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+    let g:ctrlp_use_caching = 0
+endif
 
 set backspace=2   " Backspace deletes like most programs in insert mode
 set nobackup
