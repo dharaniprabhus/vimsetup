@@ -1,6 +1,7 @@
 syntax on
 let mapleader = " "
 set noerrorbells
+set belloff=all
 set encoding=utf-8
 set tabstop=4 softtabstop=4
 set shiftwidth=4
@@ -84,12 +85,18 @@ else
 endif
 
 "YCM
-let g:ycm_confirm_extra_conf=0
+let g:ycm_confirm_extra_conf=0 "'%USERPROFILE%\vimfiles\plugged\youcompleteme\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
 nnoremap <leader>gh :YcmCompleter GoToInclude<CR>
 nnoremap <leader>gd :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>gi :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <leader>gf :YcmCompleter GoToImprecise<CR>
+
+" copy clipboard
+nnoremap <Leader>pp "+pp
+nnoremap <Leader>yy "+yy
+nnoremap <Leader>p ggVG"+p
+nnoremap <Leader>y ggVG"+y
 
 " Map Ctrl + p to open fuzzy find (FZF)
 nnoremap <c-p> :Files<cr>
@@ -101,6 +108,12 @@ nnoremap zz :update<cr>
 inoremap zz <Esc>:update<cr>
 nnoremap zx :wq<cr>
 inoremap zx <Esc>:wq<cr>
+
+" Disable arrow
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
 
 if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
