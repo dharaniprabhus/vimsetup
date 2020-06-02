@@ -1,3 +1,5 @@
+set langmenu=en_US
+let $LANG = 'en_US'
 syntax on
 let mapleader = " "
 set noerrorbells
