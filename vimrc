@@ -138,6 +138,10 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
+"tags
+nnoremap <leader>t :CtrlPTag<cr>
+nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+
 if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
     nmap <F12> :call FontSizePlus()<CR>
