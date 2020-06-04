@@ -65,6 +65,9 @@ let g:ctrlp_max_files = 0
 let ctrlp_lazy_update=1
 let ctrlp_clear_cache_on_exit=0
 let ctrlp_by_filename=1
+let g:ctrlp_map = '<c-p>'
+" https://sourceforge.net/projects/ctags/files/ctags/
+let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
 
 set guifont=consolas:h12
 if has("unix")
@@ -120,9 +123,6 @@ else
   nmap <Leader>yp :let @+=expand("%")<CR>
   nmap <Leader>yf :let @+=expand("%:p")<CR>
 endif
-
-" Map Ctrl + p to open fuzzy find (FZF)
-nnoremap <c-p> :Files<cr>
 
 map <C-n> :NERDTreeToggle<CR>
 
