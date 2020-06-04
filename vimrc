@@ -60,6 +60,10 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.exe$\|\.so$\|\.dat$\|\.patch$\|\.cmake$\|\.zip$\|\.png$\|\.in$\|\.out$\'
   \ }
 let g:ctrlp_max_files = 0
+let ctrlp_lazy_update=1
+let ctrlp_clear_cache_on_exit=0
+let ctrlp_by_filename=1
+set mmp=5000
 
 set guifont=consolas:h12
 if has("unix")
