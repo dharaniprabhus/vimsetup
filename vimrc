@@ -28,7 +28,9 @@ set textwidth=80
 set colorcolumn=+1
 set number
 set numberwidth=5
-
+set mmp=5000
+set splitright
+set splitbelow
 
 call plug#begin('~/vimfiles/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
@@ -63,7 +65,6 @@ let g:ctrlp_max_files = 0
 let ctrlp_lazy_update=1
 let ctrlp_clear_cache_on_exit=0
 let ctrlp_by_filename=1
-set mmp=5000
 
 set guifont=consolas:h12
 if has("unix")
@@ -109,6 +110,16 @@ nnoremap <Leader>pp "+pp
 nnoremap <Leader>yy "+yy
 nnoremap <Leader>p ggVG"+p
 nnoremap <Leader>y ggVG"+y
+if has('win32')
+  nmap <Leader>yp :let @+=substitute(expand("%"), "/", "\\", "g")<CR>
+  nmap <Leader>yf :let @+=substitute(expand("%:p"), "/", "\\", "g")<CR>
+
+  " This will copy the path in 8.3 short format, for DOS and Windows 9x
+  nmap <Leader>y8 :let @+=substitute(expand("%:p:8"), "/", "\\", "g")<CR>
+else
+  nmap <Leader>yp :let @+=expand("%")<CR>
+  nmap <Leader>yf :let @+=expand("%:p")<CR>
+endif
 
 " Map Ctrl + p to open fuzzy find (FZF)
 nnoremap <c-p> :Files<cr>
