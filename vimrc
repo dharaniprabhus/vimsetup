@@ -54,6 +54,12 @@ if executable('rg')
     let g:ctrlp_use_caching = 0
     let g:rg_derive_root='true'
 endif
+" Sane Ignore For ctrlp
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\.git$\|\.hg$\|\.svn$\|\.yardoc\|public\/images\|public\/system\|data\|log\|tmp$',
+  \ 'file': '\.exe$\|\.so$\|\.dat$\|\.patch$\|\.cmake$\|\.zip$\|\.png$\|\.in$\|\.out$\'
+  \ }
+let g:ctrlp_max_files = 0
 
 set guifont=consolas:h12
 if has("unix")
