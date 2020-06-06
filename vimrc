@@ -53,13 +53,12 @@ let g:gruvbox_contrast_dark='soft'
 
 if executable('rg')
     let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-    let g:ctrlp_use_caching = 0
-    let g:rg_derive_root='true'
+    let g:ctrlp_use_caching = 0    
 endif
-" Sane Ignore For ctrlp
+let g:ctrlp_working_path_mode = ''
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\.git$\|\.hg$\|\.svn$\|\.yardoc\|public\/images\|public\/system\|data\|log\|tmp$',
-  \ 'file': '\.exe$\|\.so$\|\.dat$\|\.patch$\|\.cmake$\|\.zip$\|\.png$\|\.in$\|\.out$\'
+  \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+  \ 'file': '\.exe$\|\.so$\|\.dat$\|\.patch$\|\.cmake$\|\.zip$\|\.png$\|\.in$\|\.out$'
   \ }
 let g:ctrlp_max_files = 0
 let ctrlp_lazy_update=1
