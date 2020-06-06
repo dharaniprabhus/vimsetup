@@ -178,6 +178,10 @@ endif
 nnoremap <leader>t :CtrlPTag<cr>
 nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 
+" comment
+:vmap <F5> :s:^://<CR>
+:nnoremap <F5> :s:^://<CR>
+
 if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
     nmap <F12> :call FontSizePlus()<CR>
