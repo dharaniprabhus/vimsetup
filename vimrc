@@ -26,26 +26,19 @@ set rnu
 set colorcolumn=80
 set textwidth=80
 set colorcolumn=+1
-set number
 set numberwidth=5
 set mmp=5000
 set splitright
 set splitbelow
-
+set tags=./tags;/
 call plug#begin('~/vimfiles/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'chrisbra/vim-commentary'
   Plug 'tpope/vim-surround'
   Plug 'scrooloose/nerdtree'
-  Plug 'tpope/vim-fugitive'
-  Plug 'itchyny/lightline.vim'
-  Plug 'valloric/youcompleteme'
   Plug 'morhetz/gruvbox'
   Plug 'scrooloose/nerdcommenter'
   Plug 'burntsushi/ripgrep'
-  Plug 'lyuts/vim-rtags'
-  Plug 'mbbill/undotree'
-  Plug 'leafgarland/typescript-vim'
 call plug#end()
 
 colorscheme gruvbox
@@ -53,9 +46,11 @@ let g:gruvbox_contrast_dark='soft'
 
 if executable('rg')
     let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-    let g:ctrlp_use_caching = 0    
+    let g:ctrlp_use_caching = 0
+    "let g:rg_derive_root='true'
 endif
 let g:ctrlp_working_path_mode = ''
+" Sane Ignore For ctrlp
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\.git$\|\.hg$\|\.svn$',
   \ 'file': '\.exe$\|\.so$\|\.dat$\|\.patch$\|\.cmake$\|\.zip$\|\.png$\|\.in$\|\.out$'
@@ -99,14 +94,6 @@ else
     endfunction
 endif
 
-"YCM
-let g:ycm_confirm_extra_conf=0 "'%USERPROFILE%\vimfiles\plugged\youcompleteme\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
-nnoremap <leader>gh :YcmCompleter GoToInclude<CR>
-nnoremap <leader>gd :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>gi :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>g :YcmCompleter GoTo<CR>
-nnoremap <leader>gf :YcmCompleter GoToImprecise<CR>
-
 " copy clipboard
 nnoremap <Leader>pp "+pp
 nnoremap <Leader>yy "+yy
@@ -142,35 +129,21 @@ if has("cscope")
     set csto=0
     set cst
     set csverb
+    set nocscopeverbose
     " C symbol
-    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    " definition
-    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    " functions that called by this function
-    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-    " funtions that calling this function
-    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    " test string
-    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-    " egrep pattern
-    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <C-[> :cs find s <C-R>=expand("<cword>")<CR><CR>
     " file
-    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <C-]>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
     " files #including this file
-    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nmap <C-[>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 
-    " Automatically make cscope connections
-    function! LoadCscope()
-        let db = findfile("cscope.out", ".;")
-        if (!empty(db))
-            let path = strpart(db, 0, match(db, "/cscope.out$"))
-            set nocscopeverbose " suppress 'duplicate connection' error
-            exe "cs add " . db . " " . path
-            set cscopeverbose
-        endif
-    endfunction
-    au BufEnter /* call LoadCscope()
-
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+        " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
 endif
 
 " tags
