@@ -39,10 +39,12 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'morhetz/gruvbox'
   Plug 'scrooloose/nerdcommenter'
   Plug 'burntsushi/ripgrep'
+  Plug 'felikz/ctrlp-py-matcher'
 call plug#end()
 
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='soft'
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 
 if executable('rg')
     let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
