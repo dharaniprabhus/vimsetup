@@ -44,7 +44,12 @@ call plug#end()
 
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='soft'
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+ " PyMatcher for CtrlP
+if !has('python')
+    echo 'In order to use pymatcher plugin, you need +python compiled vim'
+else
+    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+endif
 
 if executable('rg')
     let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
@@ -58,7 +63,7 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.exe$\|\.so$\|\.dat$\|\.patch$\|\.cmake$\|\.zip$\|\.png$\|\.in$\|\.out$'
   \ }
 let g:ctrlp_max_files = 0
-let ctrlp_lazy_update=1
+let ctrlp_lazy_update=350
 let ctrlp_clear_cache_on_exit=0
 let ctrlp_by_filename=1
 let g:ctrlp_map = '<c-p>'
@@ -160,3 +165,4 @@ if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
     nmap <F12> :call FontSizePlus()<CR>
 endif
+
