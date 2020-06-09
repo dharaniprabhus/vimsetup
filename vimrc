@@ -138,11 +138,11 @@ if has("cscope")
     set csverb
     set nocscopeverbose
     " C symbol
-    nmap <C-[> :cs find s <C-R>=expand("<cword>")<CR><CR>
+    nnoremap <leader>r :cs find s <C-R>=expand("<cword>")<CR><CR>
     " file
-    nmap <C-]>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+    nnoremap <leader>o :cs find f <C-R>=expand("<cfile>")<CR><CR>
     " files #including this file
-    nmap <C-[>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    nnoremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 
     " add any database in current directory
     if filereadable("cscope.out")
