@@ -143,6 +143,8 @@ if has("cscope")
     nnoremap <leader>o :cs find f <C-R>=expand("<cfile>")<CR><CR>
     " files #including this file
     nnoremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+    " search helper
+    nnoremap <leader>s :cs find 
 
     " add any database in current directory
     if filereadable("cscope.out")
@@ -160,6 +162,9 @@ nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 " comment
 :vmap <F5> :s:^://<CR>
 :nnoremap <F5> :s:^://<CR>
+
+" Switch window
+nnoremap <F2> <C-W>W
 
 if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
