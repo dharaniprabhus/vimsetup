@@ -40,6 +40,7 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'scrooloose/nerdcommenter'
   Plug 'burntsushi/ripgrep'
   Plug 'felikz/ctrlp-py-matcher'
+  Plug 'neoclide/coc.nvim', {'branch': 'release'} "https://releases.llvm.org/download.html
 call plug#end()
 
 colorscheme gruvbox
@@ -171,3 +172,27 @@ if has("gui_running")
     nmap <F12> :call FontSizePlus()<CR>
 endif
 
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" GoTo code navigation.
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gy <Plug>(coc-type-definition)
+nmap <leader>gi <Plug>(coc-implementation)
+nmap <leader>gr <Plug>(coc-references)
