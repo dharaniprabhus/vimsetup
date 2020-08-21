@@ -103,10 +103,11 @@ else
 endif
 
 " copy clipboard
-nnoremap <Leader>pp "+pp
-nnoremap <Leader>yy "+yy
-nnoremap <Leader>p ggVG"+p
-nnoremap <Leader>y ggVG"+y
+inoremap <c-v> <esc>:set paste<cr>a<c-r>=getreg('+')<cr><esc>:set nopaste<cr>mi`[=`]`ia
+cmap <C-V> <C-R>+
+vnoremap <C-C> "+y
+vnoremap <C-V> "+p
+
 if has('win32')
   nmap <Leader>yp :let @+=substitute(expand("%"), "/", "\\", "g")<CR>
   nmap <Leader>yf :let @+=substitute(expand("%:p"), "/", "\\", "g")<CR>
