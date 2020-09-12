@@ -30,6 +30,7 @@ set numberwidth=5
 set mmp=5000
 set splitright
 set splitbelow
+set backspace=indent,eol,start
 set tags=./tags;/
 call plug#begin('~/vimfiles/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
@@ -120,6 +121,9 @@ else
 endif
 
 map <C-n> :NERDTreeToggle<CR>
+
+" eacape remap
+inoremap <C-X> <Esc>
 
 "  saving shortcut
 nnoremap zz :update<cr>
