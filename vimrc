@@ -31,7 +31,6 @@ set mmp=5000
 set splitright
 set splitbelow
 set backspace=indent,eol,start
-set tags=./tags;/
 call plug#begin('~/vimfiles/plugged')
   Plug 'ctrlpvim/ctrlp.vim'
   Plug 'chrisbra/vim-commentary'
@@ -42,6 +41,12 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'burntsushi/ripgrep'
   Plug 'felikz/ctrlp-py-matcher'
   Plug 'neoclide/coc.nvim', {'branch': 'release'} "https://releases.llvm.org/download.html
+  Plug 'juneedahamed/vc.vim'
+  Plug 'ludovicchabant/vim-gutentags'
+  Plug 'majutsushi/tagbar'
+  Plug 'chrisbra/changesplugin'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
 call plug#end()
 
 colorscheme gruvbox
@@ -165,13 +170,29 @@ endif
 nnoremap <leader>t :CtrlPTag<cr>
 nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 
+"fzf
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <C-f> :Files<CR>
+nnoremap <silent> <Leader>f :Rg<CR>
+nnoremap <silent> <Leader>/ :BLines<CR>
+nnoremap <silent> <Leader>' :Marks<CR>
+nnoremap <silent> <Leader>g :Commits<CR>
+nnoremap <silent> <Leader>H :Helptags<CR>
+nnoremap <silent> <Leader>hh :History<CR>
+nnoremap <silent> <Leader>h: :History:<CR>
+nnoremap <silent> <Leader>h/ :History/<CR> 
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+" vcs diff
+let g:changes_vcs_check = 1
+let g:gutentags_cache_dir = $HOME
+
 " comment
-:vmap <F5> :s:^://<CR>
-:nnoremap <F5> :s:^://<CR>
+autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
 
 " Switch window
 nnoremap <F2> <C-W>W
-
+nmap <F8> :TagbarToggle<CR>
 if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
     nmap <F12> :call FontSizePlus()<CR>
@@ -201,3 +222,44 @@ nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>gy <Plug>(coc-type-definition)
 nmap <leader>gi <Plug>(coc-implementation)
 nmap <leader>gr <Plug>(coc-references)
+" Vim with all enhancements
+" source $VIMRUNTIME/vimrc_example.vim
+
+" Use the internal diff if available.
+" Otherwise use the special 'diffexpr' for Windows.
+if &diffopt !~# 'internal'
+  set diffexpr=MyDiff()
+endif
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg1 = substitute(arg1, '!', '\!', 'g')
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg2 = substitute(arg2, '!', '\!', 'g')
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let arg3 = substitute(arg3, '!', '\!', 'g')
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  let cmd = substitute(cmd, '!', '\!', 'g')
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
+
