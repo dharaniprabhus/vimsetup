@@ -32,14 +32,11 @@ set splitright
 set splitbelow
 set backspace=indent,eol,start
 call plug#begin('~/vimfiles/plugged')
-  Plug 'ctrlpvim/ctrlp.vim'
   Plug 'chrisbra/vim-commentary'
   Plug 'tpope/vim-surround'
   Plug 'scrooloose/nerdtree'
   Plug 'morhetz/gruvbox'
-  Plug 'scrooloose/nerdcommenter'
   Plug 'burntsushi/ripgrep' "https://github.com/BurntSushi/ripgrep/releases
-  Plug 'felikz/ctrlp-py-matcher'
   Plug 'neoclide/coc.nvim', {'branch': 'release'} "https://releases.llvm.org/download.html
   Plug 'juneedahamed/vc.vim'
   Plug 'ludovicchabant/vim-gutentags'
@@ -47,35 +44,13 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'chrisbra/changesplugin'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-airline/vim-airline'
+  Plug 'tpope/vim-repeat'
 call plug#end()
 
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='soft'
- " PyMatcher for CtrlP
-if !has('python')
-    echo 'In order to use pymatcher plugin, you need +python compiled vim'
-else
-    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-endif
-
-if executable('rg')
-    let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-    let g:ctrlp_use_caching = 0
-    "let g:rg_derive_root='true'
-endif
-let g:ctrlp_working_path_mode = ''
-" Sane Ignore For ctrlp
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-  \ 'file': '\.exe$\|\.so$\|\.dat$\|\.patch$\|\.cmake$\|\.zip$\|\.png$\|\.in$\|\.out$'
-  \ }
-let g:ctrlp_max_files = 0
-let ctrlp_lazy_update=350
-let ctrlp_clear_cache_on_exit=0
-let ctrlp_by_filename=1
-let g:ctrlp_map = '<c-p>'
-" https://sourceforge.net/projects/ctags/files/ctags/
-let g:ctrlp_extensions = ['buffertag', 'tag', 'line', 'dir']
 
 set guifont=consolas:h12
 if has("unix")
@@ -140,32 +115,6 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
-if has("cscope")
-    set csprg=cscope.exe
-    set csto=0
-    set cst
-    set csverb
-    set nocscopeverbose
-    " C symbol
-    nnoremap <leader>r :cs find s <C-R>=expand("<cword>")<CR><CR>
-    " file
-    nnoremap <leader>o :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    " files #including this file
-    nnoremap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    " search helper
-    nnoremap <leader>s :cs find 
-
-    " add any database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out
-        " else add database pointed to by environment
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-endif
-
-" tags
-nnoremap <leader>t :CtrlPTag<cr>
 nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 
 "fzf
