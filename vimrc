@@ -1,3 +1,5 @@
+set langmenu=en_US
+let $LANG = 'en_US'
 syntax on
 let mapleader = " "
 set noerrorbells
@@ -7,7 +9,7 @@ set tabstop=4 softtabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
-set nowrap
+set nowrap " do not wrap on load
 set nobackup
 set nowritebackup
 set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
@@ -24,34 +26,31 @@ set rnu
 set colorcolumn=80
 set textwidth=80
 set colorcolumn=+1
-set number
 set numberwidth=5
-
-
+set mmp=5000
+set splitright
+set splitbelow
+set backspace=indent,eol,start
 call plug#begin('~/vimfiles/plugged')
-  Plug 'ctrlpvim/ctrlp.vim'
   Plug 'chrisbra/vim-commentary'
   Plug 'tpope/vim-surround'
   Plug 'scrooloose/nerdtree'
-  Plug 'tpope/vim-fugitive'
-  Plug 'itchyny/lightline.vim'
-  Plug 'valloric/youcompleteme'
   Plug 'morhetz/gruvbox'
-  Plug 'scrooloose/nerdcommenter'
-  Plug 'burntsushi/ripgrep'
-  Plug 'lyuts/vim-rtags'
-  Plug 'mbbill/undotree'
-  Plug 'leafgarland/typescript-vim'
+  Plug 'burntsushi/ripgrep' "https://github.com/BurntSushi/ripgrep/releases
+  Plug 'neoclide/coc.nvim', {'branch': 'release'} "https://releases.llvm.org/download.html
+  Plug 'juneedahamed/vc.vim'
+  Plug 'ludovicchabant/vim-gutentags'
+  Plug 'majutsushi/tagbar'
+  Plug 'chrisbra/changesplugin'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-airline/vim-airline'
+  Plug 'tpope/vim-repeat'
 call plug#end()
 
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='soft'
-
-if executable('rg')
-    let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-    let g:ctrlp_use_caching = 0
-    let g:rg_derive_root='true'
-endif
 
 set guifont=consolas:h12
 if has("unix")
@@ -84,25 +83,26 @@ else
     endfunction
 endif
 
-"YCM
-let g:ycm_confirm_extra_conf=0 "'%USERPROFILE%\vimfiles\plugged\youcompleteme\third_party\ycmd\cpp\ycm\.ycm_extra_conf.py'
-nnoremap <leader>gh :YcmCompleter GoToInclude<CR>
-nnoremap <leader>gd :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>gi :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>g :YcmCompleter GoTo<CR>
-nnoremap <leader>gf :YcmCompleter GoToImprecise<CR>
-
 " copy clipboard
-nnoremap <Leader>pp "+pp
-nnoremap <Leader>yy "+yy
-nnoremap <Leader>p ggVG"+p
-nnoremap <Leader>y ggVG"+y
+inoremap <c-v> <esc>:set paste<cr>a<c-r>=getreg('+')<cr><esc>:set nopaste<cr>mi`[=`]`ia
+cmap <C-V> <C-R>+
+vnoremap <C-C> "+y
+vnoremap <C-V> "+p
 
-" Map Ctrl + p to open fuzzy find (FZF)
-nnoremap <c-p> :Files<cr>
+if has('win32')
+  nmap <Leader>yp :let @+=substitute(expand("%"), "/", "\\", "g")<CR>
+  nmap <Leader>yf :let @+=substitute(expand("%:p"), "/", "\\", "g")<CR>
+
+  " This will copy the path in 8.3 short format, for DOS and Windows 9x
+  nmap <Leader>y8 :let @+=substitute(expand("%:p:8"), "/", "\\", "g")<CR>
+else
+  nmap <Leader>yp :let @+=expand("%")<CR>
+  nmap <Leader>yf :let @+=expand("%:p")<CR>
+endif
 
 map <C-n> :NERDTreeToggle<CR>
 
+inoremap kj <Esc>
 "  saving shortcut
 nnoremap zz :update<cr>
 inoremap zz <Esc>:update<cr>
@@ -115,7 +115,57 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
+nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+
+"fzf
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <C-f> :Files<CR>
+nnoremap <silent> <Leader>f :Rg<CR>
+nnoremap <silent> <Leader>/ :BLines<CR>
+nnoremap <silent> <Leader>' :Marks<CR>
+nnoremap <silent> <Leader>g :Commits<CR>
+nnoremap <silent> <Leader>H :Helptags<CR>
+nnoremap <silent> <Leader>hh :History<CR>
+nnoremap <silent> <Leader>h: :History:<CR>
+nnoremap <silent> <Leader>h/ :History/<CR> 
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+" vcs diff
+let g:changes_vcs_check = 1
+let g:gutentags_cache_dir = $HOME
+
+" comment
+autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
+
+" Switch window
+nnoremap <F2> <C-W>W
+nmap <F8> :TagbarToggle<CR>
 if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
     nmap <F12> :call FontSizePlus()<CR>
 endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" GoTo code navigation.
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gy <Plug>(coc-type-definition)
+nmap <leader>gi <Plug>(coc-implementation)
+nmap <leader>gr <Plug>(coc-references)
