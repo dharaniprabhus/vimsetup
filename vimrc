@@ -37,7 +37,7 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'scrooloose/nerdtree'
   Plug 'morhetz/gruvbox'
   Plug 'burntsushi/ripgrep' "https://github.com/BurntSushi/ripgrep/releases
-  Plug 'neoclide/coc.nvim', {'branch': 'release'} "https://releases.llvm.org/download.html
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'juneedahamed/vc.vim'
   Plug 'ludovicchabant/vim-gutentags'
   Plug 'majutsushi/tagbar'
@@ -51,6 +51,14 @@ call plug#end()
 
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='soft'
+
+"https://releases.llvm.org/download.html
+let g:coc_global_extensions = [
+            \'coc-highlight',
+            \'coc-python',
+            \'coc-json', 
+            \"coc-clangd"
+            \]
 
 set guifont=consolas:h12
 if has("unix")
