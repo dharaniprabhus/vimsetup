@@ -41,7 +41,6 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'juneedahamed/vc.vim'
   Plug 'ludovicchabant/vim-gutentags'
   Plug 'majutsushi/tagbar'
-  Plug 'chrisbra/changesplugin'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
   Plug 'tpope/vim-fugitive'
