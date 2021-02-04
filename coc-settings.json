@@ -1,4 +1,5 @@
 {
+    "clangd.arguments" : ["-cross-file-rename"],
     "coc.preferences.useQuickfixForLocations": true,
     "coc.preferences.snippets.enable": true,
     "coc.preferences.extensionUpdateCheck": "never",
