@@ -176,3 +176,7 @@ nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>gy <Plug>(coc-type-definition)
 nmap <leader>gi <Plug>(coc-implementation)
 nmap <leader>gr <Plug>(coc-references)
+nmap <leader>rr <plug>(coc-rename) 
+nnoremap <leader>prr :CocSearch <C-R>=expand("<cword>")<CR><CR>
+nnoremap <F4> :CocCommand clangd.switchSourceHeader<CR><CR>
+nnoremap <F5> :CocCommand clangd.symbolInfo<CR>
