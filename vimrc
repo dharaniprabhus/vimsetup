@@ -123,8 +123,6 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
-nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
-
 "fzf
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <C-f> :Files<CR>
@@ -179,5 +177,9 @@ nmap <leader>gi <Plug>(coc-implementation)
 nmap <leader>gr <Plug>(coc-references)
 nmap <leader>rr <plug>(coc-rename) 
 nnoremap <leader>prr :CocSearch <C-R>=expand("<cword>")<CR><CR>
-nnoremap <F4> :CocCommand clangd.switchSourceHeader<CR><CR>
-nnoremap <F5> :CocCommand clangd.symbolInfo<CR>
+
+if has("clangd")
+    nnoremap <F4> :CocCommand clangd.switchSourceHeader<CR><CR>
+else
+    nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+endif
