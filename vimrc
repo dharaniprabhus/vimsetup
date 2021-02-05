@@ -108,6 +108,7 @@ else
 endif
 
 map <C-n> :NERDTreeToggle<CR>
+map <C-m> :NERDTreeFind<CR>
 
 inoremap kj <Esc>
 "  saving shortcut
