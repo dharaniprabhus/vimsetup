@@ -46,6 +46,7 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'tpope/vim-fugitive'
   Plug 'vim-airline/vim-airline'
   Plug 'tpope/vim-repeat'
+  Plug 'chiel92/vim-autoformat'
 call plug#end()
 
 colorscheme gruvbox
@@ -183,3 +184,5 @@ if has("clangd")
 else
     nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 endif
+" clang-format needs to installed
+autocmd BufWritePre *.h,*.cc,*.cpp :Autoformat
