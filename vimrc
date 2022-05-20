@@ -14,7 +14,7 @@ set nobackup
 set nowritebackup
 set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
 set history=50
-set undodir=~/vimfiles/undo
+set undodir=~/.vim/undo
 set ruler         " show the cursor position all the time
 set showcmd       " display incomplete commands
 set incsearch     " do incremental searching
@@ -31,14 +31,15 @@ set mmp=5000
 set splitright
 set splitbelow
 set backspace=indent,eol,start
-call plug#begin('~/vimfiles/plugged')
+
+call plug#begin('~/.vim/plugged')
   Plug 'chrisbra/vim-commentary'
   Plug 'tpope/vim-surround'
   Plug 'scrooloose/nerdtree'
-  Plug 'morhetz/gruvbox'
   Plug 'burntsushi/ripgrep' "https://github.com/BurntSushi/ripgrep/releases
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'juneedahamed/vc.vim'
+  Plug 'puremourning/vimspector'
   Plug 'ludovicchabant/vim-gutentags'
   Plug 'majutsushi/tagbar'
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -47,10 +48,12 @@ call plug#begin('~/vimfiles/plugged')
   Plug 'vim-airline/vim-airline'
   Plug 'tpope/vim-repeat'
   Plug 'chiel92/vim-autoformat'
+  Plug 'morhetz/gruvbox'
 call plug#end()
 
-colorscheme gruvbox
+set background=light
 let g:gruvbox_contrast_dark='soft'
+colorscheme gruvbox
 
 "https://releases.llvm.org/download.html
 let g:coc_global_extensions = [
@@ -117,6 +120,7 @@ nnoremap zz :update<cr>
 inoremap zz <Esc>:update<cr>
 nnoremap zx :wq<cr>
 inoremap zx <Esc>:wq<cr>
+nnoremap <leader>ca <C-W><C-O>
 
 " Disable arrow
 noremap <Up> <Nop>
@@ -139,14 +143,12 @@ command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-hea
 
 " vcs diff
 let g:changes_vcs_check = 1
-let g:gutentags_cache_dir = $HOME
+" let g:gutentags_cache_dir = $HOME
 
-" comment
-autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
 
 " Switch window
 nnoremap <F2> <C-W>W
-nmap <F8> :TagbarToggle<CR>
+nmap <leader>t :TagbarToggle<CR>
 if has("gui_running")
     nmap <S-F12> :call FontSizeMinus()<CR>
     nmap <F12> :call FontSizePlus()<CR>
@@ -177,12 +179,31 @@ nmap <leader>gy <Plug>(coc-type-definition)
 nmap <leader>gi <Plug>(coc-implementation)
 nmap <leader>gr <Plug>(coc-references)
 nmap <leader>rr <plug>(coc-rename) 
+nmap <leader>qf <plug>(coc-fix-current)
 nnoremap <leader>prr :CocSearch <C-R>=expand("<cword>")<CR><CR>
+hi CocErrorSign guifg=#282828
 
 if has("clangd")
     nnoremap <F4> :CocCommand clangd.switchSourceHeader<CR><CR>
 else
     nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 endif
-" clang-format needs to installed
-autocmd BufWritePre *.h,*.cc,*.cpp :Autoformat
+let g:vimspector_enable_mappings = 'HUMAN'
+
+nnoremap <silent> <C-h> :Files /opt/mgu22/sysroots/aarch64-poky-linux/usr/include/<CR>
+
+augroup grp
+    autocmd!
+    " quickfix
+    autocmd FileType qf if mapcheck('<esc>', 'n') ==# '' | nnoremap <buffer><silent> <esc> :cclose<bar>lclose<CR> | endif
+    autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+
+    " clang-format needs to installed
+    autocmd BufWritePre *.h,*.cc,*.cpp :Autoformat
+
+    " comment
+    autocmd FileType c,cpp,cs,java setlocal commentstring=//\ %s
+
+    " highlight
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup END
