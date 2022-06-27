@@ -52,7 +52,7 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 
 set background=light
-let g:gruvbox_contrast_dark='soft'
+let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 
 "https://releases.llvm.org/download.html
@@ -181,7 +181,6 @@ nmap <leader>gr <Plug>(coc-references)
 nmap <leader>rr <plug>(coc-rename) 
 nmap <leader>qf <plug>(coc-fix-current)
 nnoremap <leader>prr :CocSearch <C-R>=expand("<cword>")<CR><CR>
-hi CocErrorSign guifg=#282828
 
 if has("clangd")
     nnoremap <F4> :CocCommand clangd.switchSourceHeader<CR><CR>
