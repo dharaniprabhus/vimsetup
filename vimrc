@@ -175,18 +175,19 @@ inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " GoTo code navigation.
 nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gy <Plug>(coc-type-definition)
-nmap <leader>gi <Plug>(coc-implementation)
 nmap <leader>gr <Plug>(coc-references)
 nmap <leader>rr <plug>(coc-rename) 
 nmap <leader>qf <plug>(coc-fix-current)
 nnoremap <leader>prr :CocSearch <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>ld :CocDiagnostics <CR><CR>
 
 if has("clangd")
-    nnoremap <F4> :CocCommand clangd.switchSourceHeader<CR><CR>
+    nnoremap <leader>gi :CocCommand clangd.switchSourceHeader<CR><CR>
 else
-    nnoremap <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+    nnoremap <leader>gi :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 endif
+
+
 let g:vimspector_enable_mappings = 'HUMAN'
 
 nnoremap <silent> <C-h> :Files /opt/mgu22/sysroots/aarch64-poky-linux/usr/include/<CR>
