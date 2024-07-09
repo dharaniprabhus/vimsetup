@@ -132,6 +132,19 @@ return {
           },
         })
       end,
+      ["clangd"] = function()
+        lspconfig["clangd"].setup({
+
+            cmd = { /usr/bin/clangd,
+            "--compile-commands-dir=/build/clang-asan",
+            "--query-driver=/opt/icon-bam/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-g++"
+            "--background-index",
+            "--suggest-missing-includes",
+            "--clang-tidy",
+            "--header-insertion=iwyu"
+          },
+        })
+      end,
     })
   end,
 }
