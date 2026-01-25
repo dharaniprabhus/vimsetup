@@ -169,6 +169,24 @@ return {
 				})
 				keymap.set("n", "<leader>T", "<cmd>ClangdSwitchSourceHeader<CR>", { desc = "Toggle source/header" })
 			end,
+			["rust_analyzer"] = function()
+				lspconfig["rust-analyzer"].setup({
+					capabilities = capabilities,
+					settings = {
+						cargo = {
+							allFeatures = true,
+						},
+						checkOnSave = {
+							command = "clippy",
+						},
+						completion = {
+							postfix = {
+								enable = true,
+							},
+						},
+					},
+				})
+			end,
 		})
 	end,
 }
